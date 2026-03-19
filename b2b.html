@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>niniro for Business — международные звонки для команды</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+:root {
+  --bg:      #07090f;
+  --bg-alt:  rgba(255,255,255,.022);
+  --surf:    rgba(255,255,255,.055);
+  --bdr:     rgba(255,255,255,.09);
+  --bdr2:    rgba(255,255,255,.18);
+  --nav-bg:  rgba(7,9,15,.7);
+  --text:    #eef1f9;
+  --sub:     rgba(195,210,245,.55);
+  --sub2:    rgba(195,210,245,.3);
+  --inp:     rgba(255,255,255,.06);
+  --blue:    #4f8ef7;
+  --violet:  #a855f7;
+  --cyan:    #22d3ee;
+  --green:   #22c55e;
+  --amber:   #f59e0b;
+  --g-btn:   linear-gradient(135deg,#4f8ef7,#a855f7);
+  --g-accent:linear-gradient(135deg,#4f8ef7 0%,#a855f7 55%,#22d3ee 100%);
+  --g-text:  linear-gradient(170deg,#fff 35%,rgba(160,178,230,.72));
+  --blur:    blur(24px) saturate(160%);
+  --sp: 64px;
+  --mw: 1020px;
+}
+[data-theme="light"]{
+  --bg:#f0f3ff;--bg-alt:rgba(0,10,60,.03);--surf:rgba(255,255,255,.9);
+  --bdr:rgba(0,10,60,.09);--bdr2:rgba(0,10,60,.18);--nav-bg:rgba(240,243,255,.92);
+  --text:#0f1420;--sub:rgba(15,40,110,.55);--sub2:rgba(15,40,110,.35);--inp:rgba(0,10,60,.06);
+  --g-text:linear-gradient(170deg,#0f1420 40%,rgba(40,80,200,.75));
+}
+
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit}
+
+/* ORBS */
+#orbs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);animation:ofloat 26s ease-in-out infinite alternate}
+.o1{width:600px;height:600px;background:rgba(79,142,247,.14);top:-180px;left:-80px;animation-duration:28s}
+.o2{width:480px;height:480px;background:rgba(168,85,247,.11);top:25%;right:-120px;animation-duration:34s;animation-delay:-10s}
+.o3{width:380px;height:380px;background:rgba(34,211,238,.08);bottom:12%;left:30%;animation-duration:22s;animation-delay:-5s}
+[data-theme="light"] .orb{opacity:.4}
+@keyframes ofloat{0%{transform:translate(0,0) scale(1)}50%{transform:translate(40px,-35px) scale(1.07)}100%{transform:translate(-25px,20px) scale(.94)}}
+#grain{position:fixed;inset:0;pointer-events:none;z-index:1;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  opacity:.45}
+[data-theme="light"] #grain{opacity:.15}
+nav,main,footer{position:relative;z-index:2}
+
+/* GLASS */
+.glass{background:var(--surf);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid var(--bdr);transition:border-color .3s,background .3s}
+.glass:hover{border-color:var(--bdr2)}
+
+/* TEXT GRADIENTS */
+.gt{background:var(--g-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ga{background:var(--g-accent);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 26px;border-radius:11px;background:var(--g-btn);color:#fff;font-size:14px;font-weight:700;border:none;cursor:pointer;box-shadow:0 0 26px rgba(79,142,247,.28);transition:opacity .2s,transform .15s,box-shadow .2s;white-space:nowrap;text-decoration:none}
+.btn:hover{opacity:.87;transform:translateY(-1px);box-shadow:0 0 40px rgba(79,142,247,.45)}
+.btn.lg{font-size:17px;padding:16px 44px;border-radius:13px;box-shadow:0 0 44px rgba(79,142,247,.35)}
+.btn.lg:hover{box-shadow:0 0 64px rgba(79,142,247,.55)}
+.btn.outline{background:transparent;color:var(--text);border:1px solid var(--bdr);box-shadow:none}
+.btn.outline:hover{border-color:var(--bdr2);box-shadow:none;background:var(--surf)}
+
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:15px var(--sp);position:sticky;top:0;z-index:300;background:var(--nav-bg);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-bottom:1px solid var(--bdr)}
+.nav-logo{font-size:18px;font-weight:800;letter-spacing:-.4px;background:linear-gradient(130deg,var(--text) 35%,rgba(140,170,240,.8));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-logo span{background:var(--g-btn);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-b2b-badge{padding:4px 12px;border-radius:100px;background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.25);font-size:11.5px;font-weight:700;color:var(--blue);letter-spacing:.3px}
+.nav-right{display:flex;align-items:center;gap:10px}
+.theme-btn{width:36px;height:36px;border-radius:9px;border:1px solid var(--bdr);background:var(--inp);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:border-color .2s}
+.theme-btn:hover{border-color:var(--bdr2)}
+.nav-b2c{font-size:13px;color:var(--sub);transition:color .2s}
+.nav-b2c:hover{color:var(--text)}
+
+/* SECTION */
+.sec{max-width:var(--mw);margin:0 auto;padding:84px var(--sp)}
+.sec-alt{background:var(--bg-alt);border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr)}
+.sec-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:10px}
+h2{font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-1.2px;line-height:1.1;margin-bottom:48px}
+
+/* HERO */
+.hero-wrap{max-width:var(--mw);margin:0 auto;padding:96px var(--sp) 80px}
+.hero-grid{display:grid;grid-template-columns:1fr 420px;gap:64px;align-items:center}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:7px 17px;border-radius:100px;margin-bottom:26px;background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.28);font-size:12.5px;font-weight:600;color:#93b8fd;animation:frise .7s ease both}
+h1{font-size:clamp(36px,5vw,58px);font-weight:800;line-height:1.06;letter-spacing:-2px;margin-bottom:18px;animation:frise .7s ease both .1s}
+.hero-sub{font-size:17px;line-height:1.7;color:var(--sub);max-width:420px;margin-bottom:32px;animation:frise .7s ease both .2s}
+.hero-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;animation:frise .7s ease both .3s}
+.hero-hint{font-size:12.5px;color:var(--sub2);margin-top:10px;animation:frise .7s ease both .35s}
+@keyframes frise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+/* SAVINGS CARD */
+.savings-card{border-radius:20px;padding:28px 26px;animation:frise .8s ease both .25s}
+.sc-title{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--sub2);margin-bottom:20px}
+.sc-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--bdr)}
+.sc-row:last-of-type{border-bottom:none}
+.sc-label{font-size:14px;color:var(--sub)}
+.sc-old{font-size:13px;color:var(--sub2);text-decoration:line-through}
+.sc-new{font-size:15px;font-weight:700;color:var(--green)}
+.sc-save{font-size:11.5px;font-weight:700;color:var(--green);background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);padding:3px 9px;border-radius:100px}
+.sc-total{margin-top:16px;padding:14px 16px;background:rgba(79,142,247,.08);border:1px solid rgba(79,142,247,.2);border-radius:12px;display:flex;justify-content:space-between;align-items:center}
+.sc-total-lbl{font-size:13px;color:var(--sub)}
+.sc-total-num{font-size:20px;font-weight:800;color:var(--blue)}
+.sc-note{font-size:11px;color:var(--sub2);margin-top:10px;text-align:center}
+
+/* LOGOS */
+.clients-strip{border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);padding:22px var(--sp);background:var(--bg-alt)}
+.clients-in{max-width:var(--mw);margin:0 auto;display:flex;align-items:center;gap:0;flex-wrap:wrap}
+.clients-lbl{font-size:12px;color:var(--sub2);font-weight:500;white-space:nowrap;margin-right:32px}
+.clients-logos{display:flex;align-items:center;gap:32px;flex-wrap:wrap}
+.cl{font-size:13.5px;font-weight:700;color:rgba(255,255,255,.18);white-space:nowrap;transition:color .25s;cursor:default}
+[data-theme="light"] .cl{color:rgba(0,0,60,.2)}
+.cl:hover{color:rgba(255,255,255,.45)}
+[data-theme="light"] .cl:hover{color:rgba(0,0,60,.5)}
+
+/* PAINS */
+.pain-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.pain-card{border-radius:18px;padding:28px 24px;opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease,border-color .3s;cursor:default}
+.pain-card.in{opacity:1;transform:none}
+.pain-card:hover{border-color:var(--bdr2)!important}
+.pain-ico{font-size:28px;margin-bottom:14px;display:block}
+.pain-card h3{font-size:17px;font-weight:700;letter-spacing:-.3px;margin-bottom:8px;line-height:1.3}
+.pain-card p{font-size:14px;color:var(--sub);line-height:1.75}
+.pain-stat{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:12px;font-weight:700;color:var(--blue);background:rgba(79,142,247,.08);border:1px solid rgba(79,142,247,.2);padding:4px 11px;border-radius:100px}
+
+/* PRODUCT */
+.product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px}
+.feat-card{border-radius:18px;padding:28px 24px;opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease,border-color .3s;cursor:default}
+.feat-card.in{opacity:1;transform:none}
+.feat-card:hover{border-color:var(--bdr2)!important}
+.feat-ico{width:44px;height:44px;border-radius:13px;background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.2);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px}
+.feat-card h3{font-size:16.5px;font-weight:700;letter-spacing:-.3px;margin-bottom:8px}
+.feat-card p{font-size:13.5px;color:var(--sub);line-height:1.72}
+.feat-tag{display:inline-block;margin-top:12px;font-size:11px;font-weight:700;color:var(--blue);background:rgba(79,142,247,.08);border:1px solid rgba(79,142,247,.2);padding:3px 10px;border-radius:100px}
+
+/* STEPS */
+.steps{display:flex;flex-direction:column;gap:14px}
+.step-card{display:grid;grid-template-columns:1fr 1fr;border-radius:20px;overflow:hidden;opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease,border-color .3s}
+.step-card.in{opacity:1;transform:none}
+.step-card:hover{border-color:var(--bdr2)!important}
+.s-left{padding:36px 38px;border-right:1px solid var(--bdr);background:rgba(255,255,255,.032)}
+.s-tag{display:block;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--violet);margin-bottom:12px}
+.s-left h3{font-size:19px;font-weight:700;letter-spacing:-.4px;margin-bottom:10px;line-height:1.3}
+.s-left p{font-size:14px;color:var(--sub);line-height:1.76}
+.s-right{padding:28px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.018)}
+
+/* DASHBOARD MOCK */
+.dash{width:100%;max-width:280px;border-radius:14px;overflow:hidden;background:rgba(10,13,26,.92);border:1px solid rgba(255,255,255,.14);box-shadow:0 10px 34px rgba(0,0,0,.5);font-size:12.5px}
+[data-theme="light"] .dash{background:rgba(230,235,255,.95);border-color:rgba(0,0,60,.15)}
+.dash-bar{padding:9px 12px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:5px}
+[data-theme="light"] .dash-bar{background:rgba(0,0,60,.04);border-color:rgba(0,0,60,.08)}
+.dash-bar span{font-size:11px;color:var(--sub2);margin-left:auto}
+.dot{width:9px;height:9px;border-radius:50%}
+.dr{background:#ff5f57}.dy{background:#febc2e}.dg{background:#28c840}
+.dash-body{padding:13px}
+/* stat row */
+.dstat{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--bdr)}
+.dstat-lbl{font-size:11.5px;color:var(--sub)}
+.dstat-val{font-size:13px;font-weight:700;color:var(--text)}
+.dstat-val.green{color:var(--green)}
+.dstat-val.blue{color:var(--blue)}
+/* call row */
+.dcall{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--bdr)}
+.dcall-flag{font-size:16px}
+.dcall-info{flex:1}
+.dcall-name{font-size:12px;font-weight:600}
+.dcall-sub{font-size:10.5px;color:var(--sub2)}
+.dcall-dur{font-size:12px;font-weight:700;color:var(--text)}
+/* summary */
+.dsum-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--sub2);margin-bottom:9px}
+.dsum-row{display:flex;gap:7px;padding:6px 0;border-bottom:1px solid var(--bdr);font-size:11.5px;color:var(--sub);line-height:1.5}
+.dsum-row::before{content:'·';color:var(--blue);flex-shrink:0;font-weight:700}
+/* chat */
+.bub{padding:8px 11px;border-radius:10px;font-size:12px;line-height:1.5;margin-bottom:6px;max-width:87%}
+.bout{background:var(--g-btn);color:#fff;margin-left:auto;border-bottom-right-radius:3px}
+.bin{background:rgba(255,255,255,.1);border-bottom-left-radius:3px}
+[data-theme="light"] .bin{background:rgba(0,0,60,.08)}
+.btr{background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.25);color:#93b8fd;font-size:10.5px;padding:4px 10px;border-radius:7px;margin-bottom:6px;display:flex;align-items:center;gap:5px}
+/* hold */
+.mhold{text-align:center;padding:6px 0}
+.mhold-ic{font-size:26px;display:block;margin-bottom:8px}
+.mhold-t{font-size:13px;font-weight:700;margin-bottom:4px}
+.mhold-s{font-size:11px;color:var(--sub);margin-bottom:11px;line-height:1.5}
+.mhold-n{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);border-radius:8px;padding:9px 11px;display:flex;align-items:center;gap:8px}
+.mhold-dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0;animation:blink 1.1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.mhold-nt{font-size:11px;line-height:1.5}
+
+/* PRICING */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.plan{border-radius:20px;padding:30px 26px;opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease,border-color .3s}
+.plan.in{opacity:1;transform:none}
+.plan.featured{border-color:rgba(79,142,247,.45)!important;background:rgba(79,142,247,.07)!important}
+.plan-badge{display:inline-block;font-size:11px;font-weight:700;color:#fff;background:var(--g-btn);padding:3px 10px;border-radius:100px;margin-bottom:16px}
+.plan h3{font-size:18px;font-weight:800;margin-bottom:6px}
+.plan-desc{font-size:13.5px;color:var(--sub);margin-bottom:20px;line-height:1.6}
+.plan-price{font-size:36px;font-weight:800;letter-spacing:-1px;margin-bottom:4px}
+.plan-price span{font-size:15px;font-weight:400;color:var(--sub)}
+.plan-period{font-size:12.5px;color:var(--sub2);margin-bottom:22px}
+.plan-features{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+.plan-features li{font-size:13.5px;color:var(--sub);display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.plan-features li::before{content:'✓';color:var(--blue);font-weight:700;flex-shrink:0;margin-top:1px}
+.plan-features li.no::before{content:'—';color:var(--sub2)}
+
+/* SOCIAL PROOF */
+.proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.proof-card{border-radius:18px;padding:26px 22px;display:flex;flex-direction:column;cursor:default;opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease,border-color .3s}
+.proof-card.in{opacity:1;transform:none}
+.proof-card:hover{border-color:var(--bdr2)!important}
+.proof-stars{margin-bottom:12px;font-size:15px;color:var(--amber)}
+.proof-text{font-size:14.5px;line-height:1.76;color:var(--sub);flex:1;margin-bottom:18px}
+.proof-text strong{color:var(--text);font-weight:600}
+.proof-author{display:flex;align-items:center;gap:10px}
+.proof-av{width:40px;height:40px;border-radius:50%;flex-shrink:0;background:var(--g-btn);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;box-shadow:0 0 14px rgba(79,142,247,.3)}
+.proof-name{font-size:13.5px;font-weight:700;margin-bottom:2px}
+.proof-role{font-size:12px;color:var(--sub)}
+
+/* FAQ */
+.faq{max-width:720px}
+.faq-item{border-bottom:1px solid var(--bdr);opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}
+.faq-item.in{opacity:1;transform:none}
+.faq-item:first-child{border-top:1px solid var(--bdr)}
+.faq-q{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:21px 0;cursor:pointer;font-size:15.5px;font-weight:700;letter-spacing:-.2px;transition:color .2s;line-height:1.4}
+.faq-q:hover{color:var(--blue)}
+.faq-icon{width:28px;height:28px;border-radius:50%;flex-shrink:0;background:var(--inp);border:1px solid var(--bdr);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--blue);transition:transform .3s,background .2s}
+.faq-item.open .faq-icon{transform:rotate(45deg);background:rgba(79,142,247,.12)}
+.faq-a{font-size:14px;color:var(--sub);line-height:1.78;max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s}
+.faq-item.open .faq-a{max-height:250px;padding-bottom:20px}
+
+/* CTA */
+.cta-sec{text-align:center;padding:108px var(--sp);max-width:var(--mw);margin:0 auto}
+.cta-sec h2{font-size:clamp(32px,5vw,54px);margin-bottom:16px}
+.cta-sec p{font-size:18px;color:var(--sub);margin-bottom:38px;line-height:1.65}
+.cta-actions{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.cta-proof{margin-top:24px;display:flex;align-items:center;justify-content:center;gap:26px;flex-wrap:wrap}
+.pr{display:flex;align-items:center;gap:7px;font-size:13.5px;color:var(--sub)}
+.pr::before{content:'✓';color:var(--blue);font-weight:700;font-size:14px}
+
+/* DEMO FORM */
+.demo-form{max-width:500px;margin:0 auto}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.form-field{display:flex;flex-direction:column;gap:6px}
+.form-field.full{grid-column:1/-1}
+.form-field label{font-size:12.5px;font-weight:600;color:var(--sub)}
+.form-field input,.form-field select{padding:11px 14px;border-radius:10px;background:var(--inp);border:1px solid var(--bdr);color:var(--text);font-family:inherit;font-size:14px;outline:none;transition:border-color .2s}
+.form-field input:focus,.form-field select:focus{border-color:var(--blue)}
+.form-field input::placeholder{color:var(--sub2)}
+.form-field select option{background:var(--bg);color:var(--text)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--bdr);padding:40px var(--sp);background:var(--bg-alt)}
+.footer-inner{max-width:var(--mw);margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
+.footer-links{display:flex;gap:28px;flex-wrap:wrap}
+.footer-links a{font-size:13.5px;color:var(--sub);transition:color .2s}
+.footer-links a:hover{color:var(--text)}
+.footer-right{display:flex;align-items:center;gap:14px}
+
+/* ANIM */
+.fu{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}
+.fu.in{opacity:1;transform:none}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  :root{--sp:22px}
+  .hero-grid{grid-template-columns:1fr}
+  .pain-grid,.pricing-grid,.proof-grid,.product-grid{grid-template-columns:1fr}
+  .step-card{grid-template-columns:1fr}
+  .s-left{border-right:none;border-bottom:1px solid var(--bdr)}
+  .form-grid{grid-template-columns:1fr}
+  .footer-inner{flex-direction:column;text-align:center}
+  .footer-links{justify-content:center}
+  nav{flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+
+<div id="orbs"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
+<div id="grain"></div>
+
+<!-- NAV -->
+<nav>
+  <div style="display:flex;align-items:center;gap:12px">
+    <a href="index.html" class="nav-logo">ni<span>niro</span></a>
+    <span class="nav-b2b-badge">for Business</span>
+  </div>
+  <div class="nav-right">
+    <a href="index.html" class="nav-b2c">← Для частных лиц</a>
+    <button class="theme-btn" id="theme-btn" onclick="toggleTheme()">🌙</button>
+    <a href="#demo" class="btn">Запросить демо →</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ══ HERO ══ -->
+<div class="hero-wrap">
+  <div class="hero-grid">
+    <div class="hero-left">
+      <div class="hero-badge">✦ Международные звонки для команды</div>
+      <h1>
+        <span class="gt">Ваша команда звонит за рубеж.</span><br>
+        <span class="ga">Без роуминга. Без переводчика.</span>
+      </h1>
+      <p class="hero-sub">niniro — браузерный телефон с AI-переводом для бизнеса. Подключается за 5 минут, работает для всей команды, записывает каждый разговор.</p>
+      <div class="hero-actions">
+        <a href="#demo" class="btn lg">Запросить демо →</a>
+        <a href="#pricing" class="btn outline">Посмотреть тарифы</a>
+      </div>
+      <p class="hero-hint">Бесплатный тестовый период · Без привязки карты · Подключение за 5 минут</p>
+    </div>
+
+    <!-- SAVINGS CALCULATOR -->
+    <div class="savings-card glass">
+      <div class="sc-title">Экономия команды из 10 человек / месяц</div>
+      <div class="sc-row">
+        <span class="sc-label">Роуминг на международные звонки</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="sc-old">€420</span>
+          <span class="sc-new">€38</span>
+        </div>
+      </div>
+      <div class="sc-row">
+        <span class="sc-label">Переводчик на переговоры (4 раза)</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="sc-old">€600</span>
+          <span class="sc-new">включено</span>
+        </div>
+      </div>
+      <div class="sc-row">
+        <span class="sc-label">Рабочие часы на удержании</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="sc-old">18 часов</span>
+          <span class="sc-new">~0</span>
+        </div>
+      </div>
+      <div class="sc-row">
+        <span class="sc-label">Ручная запись итогов звонков</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="sc-old">5 ч/нед</span>
+          <span class="sc-new">авто</span>
+        </div>
+      </div>
+      <div class="sc-total">
+        <span class="sc-total-lbl">Итоговая экономия в месяц</span>
+        <span class="sc-total-num">~€982</span>
+      </div>
+      <p class="sc-note">* Расчёт на основе среднего по рынку. Точные цифры — на демо.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CLIENTS STRIP -->
+<div class="clients-strip">
+  <div class="clients-in">
+    <span class="clients-lbl">Типичные клиенты:</span>
+    <div class="clients-logos">
+      <span class="cl">Туристические агентства</span>
+      <span class="cl">Рекрутинг</span>
+      <span class="cl">Юридические фирмы</span>
+      <span class="cl">Логистика</span>
+      <span class="cl">Недвижимость для экспатов</span>
+      <span class="cl">IT-аутсорс</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ БОЛИ ══ -->
+<section>
+<div class="sec">
+  <p class="sec-label fu">Типичные расходы бизнеса</p>
+  <h2 class="fu gt">Четыре статьи затрат,<br>от которых легко избавиться</h2>
+  <div class="pain-grid">
+    <div class="pain-card glass">
+      <span class="pain-ico">📱</span>
+      <h3>Роуминг бьёт по бюджету каждый месяц</h3>
+      <p>Стандартный корпоративный тариф не покрывает международные звонки. Каждый менеджер добавляет свои расходы — и к концу месяца итог неприятный.</p>
+      <div class="pain-stat">В среднем €42/чел./мес. на международные звонки</div>
+    </div>
+    <div class="pain-card glass">
+      <span class="pain-ico">🌐</span>
+      <h3>Нанимать переводчика под каждые переговоры — дорого и медленно</h3>
+      <p>Хороший переводчик стоит €80–150 в час. Деловые переговоры, онбординг иностранных клиентов, звонки поставщикам — это регулярные расходы.</p>
+      <div class="pain-stat">€150/час — средний переводчик B2B</div>
+    </div>
+    <div class="pain-card glass">
+      <span class="pain-ico">⏱️</span>
+      <h3>Сотрудники часами сидят на удержании — это рабочее время</h3>
+      <p>Зарубежные банки, партнёры, госструктуры любят держать на линии. 30–60 минут ожидания × несколько звонков в неделю = ощутимые потери производительности.</p>
+      <div class="pain-stat">До 18 рабочих часов/мес. уходит на hold</div>
+    </div>
+    <div class="pain-card glass">
+      <span class="pain-ico">📋</span>
+      <h3>Нет записей переговоров — нет доказательств договорённостей</h3>
+      <p>«Мы же договорились на другие условия». Без записи и транскрипта разговора доказать позицию невозможно. Это риск для любой сделки.</p>
+      <div class="pain-stat">78% B2B-споров возникают из-за разных версий переговоров</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══ ПРОДУКТ ══ -->
+<div class="sec-alt">
+<div class="sec">
+  <p class="sec-label fu">Что входит в niniro Business</p>
+  <h2 class="fu gt">Всё что нужно для<br>международных звонков команды</h2>
+
+  <div class="product-grid">
+    <div class="feat-card glass">
+      <div class="feat-ico">📞</div>
+      <h3>Звонки из браузера</h3>
+      <p>Работает без установки приложений. Любой сотрудник звонит с рабочего ноутбука — стоимость как у VoIP, не как у роуминга.</p>
+      <span class="feat-tag">от €0.02/мин · 180+ стран</span>
+    </div>
+    <div class="feat-card glass">
+      <div class="feat-ico">🌐</div>
+      <h3>AI-перевод в реальном времени</h3>
+      <p>Сотрудник говорит на русском — партнёр слышит свой язык. Обратный перевод тоже работает. 108 языков, задержка до 1.5 сек.</p>
+      <span class="feat-tag">Google Neural MT · 108 языков</span>
+    </div>
+    <div class="feat-card glass">
+      <div class="feat-ico">🤖</div>
+      <h3>Hold-ассистент освобождает время</h3>
+      <p>Сотрудник не ждёт на линии — бот держит очередь и уведомляет, когда ответит живой оператор. Высвобождает часы рабочего времени.</p>
+      <span class="feat-tag">Экономия до 18 ч/мес.</span>
+    </div>
+    <div class="feat-card glass">
+      <div class="feat-ico">📝</div>
+      <h3>Транскрипция и резюме каждого звонка</h3>
+      <p>После каждого звонка — запись, полная стенограмма и автоматическое краткое резюме. Доступно всей команде через дашборд.</p>
+      <span class="feat-tag">Автоматически · без ручной работы</span>
+    </div>
+    <div class="feat-card glass">
+      <div class="feat-ico">👥</div>
+      <h3>Командный дашборд</h3>
+      <p>Все звонки команды в одном месте: история, стоимость, транскрипты, аналитика по сотрудникам. Управление доступами для каждого.</p>
+      <span class="feat-tag">От 3 пользователей</span>
+    </div>
+    <div class="feat-card glass">
+      <div class="feat-ico">🔗</div>
+      <h3>API и интеграции</h3>
+      <p>REST API для встраивания в CRM, ERP или корпоративные системы. Webhook-уведомления, экспорт звонков, SSO для корпоративных клиентов.</p>
+      <span class="feat-tag">API · Webhook · SSO</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══ КАК РАБОТАЕТ ══ -->
+<section>
+<div class="sec">
+  <p class="sec-label fu">Как это работает</p>
+  <h2 class="fu gt">От подключения команды<br>до первого звонка — 5 минут</h2>
+  <div class="steps">
+
+    <div class="step-card glass">
+      <div class="s-left">
+        <span class="s-tag">Шаг 1 →</span>
+        <h3>Создаёте аккаунт и приглашаете команду</h3>
+        <p>Корпоративный аккаунт создаётся за 2 минуты. Добавляете сотрудников по email — каждый получает доступ к своему рабочему месту. Управление правами и бюджетами из одной панели.</p>
+      </div>
+      <div class="s-right">
+        <div class="dash">
+          <div class="dash-bar"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div><span>niniro.com/dashboard</span></div>
+          <div class="dash-body">
+            <div class="dstat-lbl" style="font-size:10.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--sub2);margin-bottom:10px">Команда (10 чел.)</div>
+            <div class="dcall"><span class="dcall-flag">👤</span><div class="dcall-info"><div class="dcall-name">Анна М. — Sales</div><div class="dcall-sub">Активна · €12.40/мес.</div></div><span style="font-size:11px;color:var(--green);font-weight:600">online</span></div>
+            <div class="dcall"><span class="dcall-flag">👤</span><div class="dcall-info"><div class="dcall-name">Сергей К. — Legal</div><div class="dcall-sub">Активен · €8.20/мес.</div></div><span style="font-size:11px;color:var(--green);font-weight:600">online</span></div>
+            <div class="dcall"><span class="dcall-flag">👤</span><div class="dcall-info"><div class="dcall-name">Мария Д. — HR</div><div class="dcall-sub">Последний звонок 2ч назад</div></div><span style="font-size:11px;color:var(--sub2)">offline</span></div>
+            <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--bdr);display:flex;justify-content:space-between">
+              <span style="font-size:11.5px;color:var(--sub)">Итого за месяц</span>
+              <span style="font-size:13px;font-weight:700;color:var(--blue)">€38.60</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card glass">
+      <div class="s-left">
+        <span class="s-tag">Шаг 2 →</span>
+        <h3>Сотрудник звонит из браузера — партнёр слышит свой язык</h3>
+        <p>Менеджер выбирает страну, набирает номер. AI-переводчик работает автоматически: определяет язык собеседника и переводит в обе стороны без ручной настройки.</p>
+      </div>
+      <div class="s-right">
+        <div class="dash">
+          <div class="dash-bar"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div><span>AI-перевод · активен</span></div>
+          <div class="dash-body">
+            <div class="bub bout">Хотим уточнить условия поставки</div>
+            <div class="btr">🔄 → «We'd like to clarify the delivery terms»</div>
+            <div class="bub bin">«Sure, let me pull up your account»</div>
+            <div class="btr">🔄 → «Конечно, сейчас открою ваш аккаунт»</div>
+            <div style="margin-top:8px;padding:8px 10px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:8px;font-size:11px;color:var(--green)">⚡ Язык определён автоматически: English</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card glass">
+      <div class="s-left">
+        <span class="s-tag">Шаг 3 →</span>
+        <h3>Попали на удержание — сотрудник не ждёт</h3>
+        <p>Если партнёр поставил на hold — бот держит линию. Сотрудник занимается другими задачами и получает уведомление, когда можно говорить. Никаких потерь рабочего времени.</p>
+      </div>
+      <div class="s-right">
+        <div class="dash">
+          <div class="dash-bar"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div><span>Hold-режим</span></div>
+          <div class="dash-body">
+            <div class="mhold">
+              <span class="mhold-ic">🤖</span>
+              <div class="mhold-t">Бот на линии</div>
+              <div class="mhold-s">Анна М. освобождена.<br>Ожидание: 14 мин.</div>
+              <div class="mhold-n">
+                <div class="mhold-dot"></div>
+                <div class="mhold-nt"><strong>Партнёр ответил</strong><br>Переключаем Анну обратно</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card glass">
+      <div class="s-left">
+        <span class="s-tag" style="color:var(--cyan)">Результат →</span>
+        <h3>Каждый звонок — в дашборде с транскриптом</h3>
+        <p>Руководитель видит все звонки команды: запись, стенограмму, резюме и стоимость. Можно искать по тексту, экспортировать в CRM, использовать как доказательство договорённостей.</p>
+      </div>
+      <div class="s-right">
+        <div class="dash">
+          <div class="dash-bar"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div><span>Резюме звонка</span></div>
+          <div class="dash-body">
+            <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+              <div>
+                <div style="font-size:12.5px;font-weight:700">Анна М. → Партнёр (UK)</div>
+                <div style="font-size:11px;color:var(--sub2)">14 мар · 22 мин · €0.44</div>
+              </div>
+              <span style="font-size:11px;padding:3px 8px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);color:var(--green);border-radius:6px;height:fit-content">✓ Записан</span>
+            </div>
+            <div class="dsum-tag">Ключевые пункты</div>
+            <div class="dsum-row">Условия поставки согласованы на Q2</div>
+            <div class="dsum-row">Скидка 8% при объёме от 500 ед.</div>
+            <div class="dsum-row">Контакт: James, j@partner.com</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- ══ ТАРИФЫ ══ -->
+<div class="sec-alt">
+<div class="sec" id="pricing">
+  <p class="sec-label fu">Тарифы</p>
+  <h2 class="fu gt">Прозрачная цена.<br>Платите за минуты, не за воздух.</h2>
+  <div class="pricing-grid">
+    <div class="plan glass">
+      <h3>Starter</h3>
+      <p class="plan-desc">Для небольших команд, которые только начинают</p>
+      <div class="plan-price">€29 <span>/мес.</span></div>
+      <p class="plan-period">до 3 пользователей · затем €8/доп. пользователь</p>
+      <ul class="plan-features">
+        <li>Звонки в 180+ стран</li>
+        <li>AI-перевод речи (108 языков)</li>
+        <li>Hold-ассистент</li>
+        <li>Транскрипция и резюме звонков</li>
+        <li>История звонков 90 дней</li>
+        <li class="no">Командный дашборд</li>
+        <li class="no">API доступ</li>
+      </ul>
+      <a href="#demo" class="btn outline" style="width:100%;justify-content:center">Начать бесплатно</a>
+    </div>
+    <div class="plan glass featured">
+      <div class="plan-badge">Популярный</div>
+      <h3>Team</h3>
+      <p class="plan-desc">Для активных команд с регулярными звонками за рубеж</p>
+      <div class="plan-price">€89 <span>/мес.</span></div>
+      <p class="plan-period">до 10 пользователей · минуты по €0.015</p>
+      <ul class="plan-features">
+        <li>Всё из Starter</li>
+        <li>Командный дашборд и аналитика</li>
+        <li>История звонков 12 месяцев</li>
+        <li>Экспорт транскриптов</li>
+        <li>Приоритетная поддержка</li>
+        <li>Webhook-уведомления</li>
+        <li class="no">API доступ</li>
+      </ul>
+      <a href="#demo" class="btn" style="width:100%;justify-content:center">Запросить демо →</a>
+    </div>
+    <div class="plan glass">
+      <h3>Enterprise</h3>
+      <p class="plan-desc">Для компаний с индивидуальными требованиями</p>
+      <div class="plan-price" style="font-size:28px">По запросу</div>
+      <p class="plan-period">неограниченные пользователи · фиксированный контракт</p>
+      <ul class="plan-features">
+        <li>Всё из Team</li>
+        <li>REST API и полные интеграции</li>
+        <li>SSO / SAML</li>
+        <li>SLA и дедикейтед менеджер</li>
+        <li>Кастомная аналитика</li>
+        <li>On-premise опция</li>
+        <li>Контракт и закрывающие документы</li>
+      </ul>
+      <a href="#demo" class="btn outline" style="width:100%;justify-content:center">Связаться →</a>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══ ОТЗЫВЫ ══ -->
+<section>
+<div class="sec">
+  <p class="sec-label fu">Клиенты</p>
+  <h2 class="fu gt">Компании, которые уже<br>экономят с niniro</h2>
+  <div class="proof-grid">
+    <div class="proof-card glass">
+      <div class="proof-stars">★★★★★</div>
+      <p class="proof-text">"Мы рекрутинговое агентство, работаем с кандидатами из 12 стран. <strong>Перестали нанимать переводчиков на интервью</strong> — niniro справляется лучше и стоит в 10 раз дешевле."</p>
+      <div class="proof-author"><div class="proof-av">ЕК</div><div><div class="proof-name">Елена К.</div><div class="proof-role">CEO · HR-агентство · Берлин</div></div></div>
+    </div>
+    <div class="proof-card glass">
+      <div class="proof-stars">★★★★★</div>
+      <p class="proof-text">"Занимаемся логистикой в ЕС. Звонки таможне, перевозчикам, складам. <strong>Транскрипты после каждого звонка</strong> решили 3 спора с партнёрами — у нас теперь всё задокументировано."</p>
+      <div class="proof-author"><div class="proof-av">АМ</div><div><div class="proof-name">Алексей М.</div><div class="proof-role">Operations · Логистика · Варшава</div></div></div>
+    </div>
+    <div class="proof-card glass">
+      <div class="proof-stars">★★★★★</div>
+      <p class="proof-text">"Юридическая фирма, клиенты по всей Европе. Раньше hold у немецких и французских судов выбивал сотрудников на час. <strong>Теперь бот ждёт вместо них</strong> — продуктивность выросла заметно."</p>
+      <div class="proof-author"><div class="proof-av">ДВ</div><div><div class="proof-name">Денис В.</div><div class="proof-role">Partner · Юридическая фирма · Вена</div></div></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══ FAQ ══ -->
+<div class="sec-alt">
+<div class="sec">
+  <p class="sec-label fu">FAQ</p>
+  <h2 class="fu gt">Вопросы о корпоративном<br>использовании</h2>
+  <div class="faq">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Как быстро можно подключить команду?<div class="faq-icon">+</div></div>
+      <div class="faq-a">Создание корпоративного аккаунта и приглашение сотрудников занимает 5–10 минут. Никакой установки ПО — сотрудники сразу работают через браузер.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Можно ли ограничить бюджет для каждого сотрудника?<div class="faq-icon">+</div></div>
+      <div class="faq-a">Да. В командном дашборде можно задать лимит расходов на пользователя или отдел. При приближении к лимиту — автоматическое уведомление администратору.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Как хранятся записи звонков? Это соответствует GDPR?<div class="faq-icon">+</div></div>
+      <div class="faq-a">Записи и транскрипты хранятся на зашифрованных серверах в ЕС. Сервис соответствует требованиям GDPR. Enterprise-клиенты могут выбрать регион хранения данных. Все данные доступны только вашей организации.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Есть ли интеграция с CRM (Salesforce, HubSpot, Pipedrive)?<div class="faq-icon">+</div></div>
+      <div class="faq-a">На тарифе Team доступны Webhook-уведомления и экспорт данных. Полный REST API и готовые интеграции с популярными CRM — на тарифе Enterprise. Список доступных интеграций уточняйте на демо.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Предоставляете закрывающие документы для бухгалтерии?<div class="faq-icon">+</div></div>
+      <div class="faq-a">Да. Для юридических лиц предоставляем счета, акты и другие закрывающие документы. Работаем с компаниями из России, ЕС и других юрисдикций — уточните детали на демо.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Можно ли протестировать перед покупкой?<div class="faq-icon">+</div></div>
+      <div class="faq-a">Да. Для команд мы проводим 30-минутное демо с живым тестовым звонком и настройкой под ваш сценарий. После демо — бесплатный тестовый период на 14 дней для всей команды.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══ DEMO FORM / CTA ══ -->
+<section id="demo">
+<div class="sec">
+  <div style="display:grid;grid-template-columns:1fr 440px;gap:64px;align-items:start">
+    <div>
+      <p class="sec-label fu">Демо</p>
+      <h2 class="fu gt">Покажем как это<br>работает для вашей команды</h2>
+      <p class="fu" style="font-size:16px;color:var(--sub);line-height:1.7;margin-bottom:28px">30 минут: показываем продукт, считаем вашу экономию, отвечаем на вопросы. Без давления и навязывания.</p>
+      <div class="fu" style="display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;align-items:flex-start;gap:12px">
+          <div style="width:32px;height:32px;border-radius:9px;background:rgba(79,142,247,.12);border:1px solid rgba(79,142,247,.2);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">📞</div>
+          <div><div style="font-size:14.5px;font-weight:600;margin-bottom:3px">Живой тестовый звонок</div><div style="font-size:13.5px;color:var(--sub)">Покажем AI-перевод в действии на реальном звонке</div></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px">
+          <div style="width:32px;height:32px;border-radius:9px;background:rgba(79,142,247,.12);border:1px solid rgba(79,142,247,.2);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">💰</div>
+          <div><div style="font-size:14.5px;font-weight:600;margin-bottom:3px">Расчёт экономии под вашу команду</div><div style="font-size:13.5px;color:var(--sub)">Считаем реальные цифры на основе ваших данных</div></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px">
+          <div style="width:32px;height:32px;border-radius:9px;background:rgba(79,142,247,.12);border:1px solid rgba(79,142,247,.2);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">🔧</div>
+          <div><div style="font-size:14.5px;font-weight:600;margin-bottom:3px">Настройка под ваш сценарий</div><div style="font-size:13.5px;color:var(--sub)">Покажем, как niniro решает именно ваши задачи</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <div class="glass fu" style="border-radius:20px;padding:30px 26px">
+      <div style="font-size:16px;font-weight:700;margin-bottom:6px">Запросить демо</div>
+      <div style="font-size:13px;color:var(--sub);margin-bottom:22px">Ответим в течение рабочего дня</div>
+      <form onsubmit="submitDemo(event)">
+        <div class="form-grid">
+          <div class="form-field">
+            <label>Имя</label>
+            <input type="text" placeholder="Алексей" required />
+          </div>
+          <div class="form-field">
+            <label>Фамилия</label>
+            <input type="text" placeholder="Смирнов" required />
+          </div>
+          <div class="form-field full">
+            <label>Корпоративный email</label>
+            <input type="email" placeholder="alex@company.com" required />
+          </div>
+          <div class="form-field full">
+            <label>Компания</label>
+            <input type="text" placeholder="Название компании" required />
+          </div>
+          <div class="form-field">
+            <label>Размер команды</label>
+            <select>
+              <option>2–5 человек</option>
+              <option>6–15 человек</option>
+              <option>16–50 человек</option>
+              <option>50+ человек</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Страны звонков</label>
+            <input type="text" placeholder="Германия, Испания..." />
+          </div>
+        </div>
+        <button type="submit" class="btn lg" style="width:100%;justify-content:center;margin-top:4px">Запросить демо →</button>
+        <p style="font-size:11.5px;color:var(--sub2);text-align:center;margin-top:10px">14 дней бесплатно после демо · Без привязки карты</p>
+      </form>
+      <div id="form-success" style="display:none;text-align:center;padding:20px 0">
+        <div style="font-size:32px;margin-bottom:12px">✅</div>
+        <div style="font-size:16px;font-weight:700;margin-bottom:6px">Заявка отправлена!</div>
+        <div style="font-size:14px;color:var(--sub)">Свяжемся с вами в течение рабочего дня</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <a href="index.html" class="nav-logo" style="font-size:18px">ni<span>niro</span></a>
+    <div class="footer-links">
+      <a href="index.html">Для частных лиц</a>
+      <a href="#">Тарифы</a>
+      <a href="#">API документация</a>
+      <a href="#demo">Демо</a>
+      <a href="#">Конфиденциальность</a>
+      <a href="#">Условия</a>
+    </div>
+    <div class="footer-right">
+      <button class="theme-btn" id="ft-theme-btn" onclick="toggleTheme()">🌙</button>
+      <span style="font-size:12.5px;color:var(--sub2)">© 2025 niniro</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* THEME */
+function toggleTheme(){
+  const d=document.documentElement;
+  const next=d.getAttribute('data-theme')==='dark'?'light':'dark';
+  d.setAttribute('data-theme',next);
+  localStorage.setItem('sc-theme',next);
+  const icon=next==='dark'?'🌙':'☀️';
+  ['theme-btn','ft-theme-btn'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=icon});
+}
+(function(){
+  const s=localStorage.getItem('sc-theme')||'dark';
+  document.documentElement.setAttribute('data-theme',s);
+  const icon=s==='dark'?'🌙':'☀️';
+  ['theme-btn','ft-theme-btn'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=icon});
+})();
+
+/* FAQ */
+function toggleFaq(q){
+  const item=q.parentElement;
+  const was=item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));
+  if(!was)item.classList.add('open');
+}
+
+/* FORM */
+function submitDemo(e){
+  e.preventDefault();
+  e.target.style.display='none';
+  document.getElementById('form-success').style.display='block';
+}
+
+/* SCROLL REVEAL */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const siblings=Array.from(e.target.parentElement.children).filter(c=>c.classList.contains(e.target.classList[0]));
+      const idx=siblings.indexOf(e.target);
+      e.target.style.transitionDelay=idx>0?`${idx*.09}s`:'0s';
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+    }
+  });
+},{threshold:.1,rootMargin:'0px 0px -36px 0px'});
+document.querySelectorAll('.pain-card,.feat-card,.step-card,.proof-card,.plan,.faq-item,.fu').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
